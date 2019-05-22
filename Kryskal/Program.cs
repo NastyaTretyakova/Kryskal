@@ -71,5 +71,6 @@ namespace ConsoleApplication4
             nodes[n] = last_n;
             return c;
         }
+        
     }
 }
