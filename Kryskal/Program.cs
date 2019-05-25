@@ -16,6 +16,8 @@ namespace Kruskal
         }
         static int[] nodes = new int[100];    //
         static int last_n = 0;                //   
+        static bool consoleInput = false;
+        static string path = "Data.txt";
 
         static void Main(string[] args)
         {
@@ -23,9 +25,19 @@ namespace Kruskal
             int NV;      // Количество вершин в графе
             int NE;      // Количество ребер в графе
             int i;
+
+            string[] readLine = null;
+            if (File.Exists(path))
+            {
+                readLine = File.ReadAllLines(path);
+                consoleInput = false;
+            }
+            else
+                consoleInput = true;
+
             Console.WriteLine("Введите количество вершин и ребер: ");
-            NV = Convert.ToInt32(Console.ReadLine());
-            NE = Convert.ToInt32(Console.ReadLine());
+            NV = Convert.ToInt32(consoleInput ? Console.ReadLine() : ReadFromFile(readLine, 0));
+            NE = Convert.ToInt32(consoleInput ? Console.ReadLine() : ReadFromFile(readLine, 1));
             for (i = 0; i < NV; i++)
             {
                 nodes[i] = -1 - i;
@@ -33,12 +45,15 @@ namespace Kruskal
             Console.WriteLine("Введите матрицу: ");
             for (i = 0; i < NE; i++)
             {
-                string[] OutS = Console.ReadLine().Split(' ');    //массив вершин и веса ребра между ними
+                string[] OutS = (consoleInput ? Console.ReadLine() : ReadFromFile(readLine, 2+i)).Split(' ');    //массив вершин и веса ребра между ними
                 edges[i].x = Convert.ToInt32(OutS[0]);            //вершина "начало"
                 edges[i].y = Convert.ToInt32(OutS[1]);            //вершина "конец"
                 edges[i].w = Convert.ToInt32(OutS[2]);            //вес ребра между вершинами "начало" и "конец"
 
             }
+
+
+
             Console.WriteLine("Минимальный остов: ");
 
             var sVes = from h in edges orderby h.w select h;    //сортируем ребра по весу (ро возрастанию)
@@ -58,6 +73,13 @@ namespace Kruskal
             }
 
             Console.ReadLine();
+        }
+
+        private static string ReadFromFile(string[] readLine, int number)
+        {
+            if (number > readLine.Length - 1)
+                return null;
+            return new Func<string>(() => { Console.WriteLine(readLine[number]); return readLine[number]; })();
         }
 
         static public int getColor(int n)
