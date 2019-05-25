@@ -28,22 +28,22 @@ namespace Kruskal
             int i;
 
 
-            if (File.Exists(path))
+            if (File.Exists(path)) //если файл с данными существует
             {
                 readLine = File.ReadAllLines(path);
-                consoleInput = false;
+                consoleInput = false; //будем читать с файла
             }
             else
-                consoleInput = true;
+                consoleInput = true; //будем читать с клавиатуры
 
             Console.WriteLine("Введите количество вершин и ребер: ");
             NV = Convert.ToInt32(consoleInput ? Console.ReadLine() : ReadFromFile(0));
             NE = Convert.ToInt32(consoleInput ? Console.ReadLine() : ReadFromFile(1));
             for (i = 0; i < NV; i++)
             {
-                nodes[i] = -1 - i;
+                nodes[i] = -1 - i;  //присваиваем уникальный цвет для каждой вершины
             }
-            Console.WriteLine("Введите матрицу: ");
+            Console.WriteLine("Введите матрицу: Начало, Конец, Вес ");
             for (i = 0; i < NE; i++)
             {
                 string[] OutS = (consoleInput ? Console.ReadLine() : ReadFromFile(2 + i)).Split(' ');    //массив вершин и веса ребра между ними
@@ -52,8 +52,6 @@ namespace Kruskal
                 edges[i].w = Convert.ToInt32(OutS[2]);            //вес ребра между вершинами "начало" и "конец"
 
             }
-
-        
 
             Console.WriteLine("Минимальный остов: ");
 
@@ -66,7 +64,7 @@ namespace Kruskal
                 {
                     // Если ребро соединяет вершины различных цветов-мы его добавляем
                     // и перекрашиваем вершину в last_n
-                    nodes[last_n] = s.y;   
+                    nodes[last_n] = s.y;
                     Console.WriteLine(s.x + " =>> " + s.y + "   с весом:" + s.w);   //вывод строки 
                 }
 
@@ -92,7 +90,8 @@ namespace Kruskal
             }
             c = getColor(nodes[n]);           //запрашиваем цвет вершины в которую она была перекрашена
             nodes[n] = last_n;                // закрашиваем точку в цвет последней не перекрашенной вершины
-            return c;                         //
+            return c;
         }
     }
+
 }
