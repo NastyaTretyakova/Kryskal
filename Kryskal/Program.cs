@@ -65,8 +65,8 @@ namespace Kruskal
                 if (getColor(s.x) != c)
                 {
                     // Если ребро соединяет вершины различных цветов-мы его добавляем
-                    // и перекрашиваем вершины
-                    nodes[last_n] = s.y;    //вершину n
+                    // и перекрашиваем вершину в last_n
+                    nodes[last_n] = s.y;   
                     Console.WriteLine(s.x + " =>> " + s.y + "   с весом:" + s.w);   //вывод строки 
                 }
 
@@ -86,12 +86,12 @@ namespace Kruskal
         static public int getColor(int n)
         {
             int c;
-            if (nodes[n] < 0)       //если эта вершина не была посещена
+            if (nodes[n] < 0)       //если эта вершина не была перекрашена
             {
-                return nodes[last_n = n];     // окрашиваем вершину
+                return nodes[last_n = n];     // выводим цвет вершины и запоминаем номер последней точки текущего множества 
             }
-            c = getColor(nodes[n]);           //
-            nodes[n] = last_n;                // nodes[n] присваиваем n- цвет????
+            c = getColor(nodes[n]);           //запрашиваем цвет вершины в которую она была перекрашена
+            nodes[n] = last_n;                // закрашиваем точку в цвет последней не перекрашенной вершины
             return c;                         //
         }
     }
