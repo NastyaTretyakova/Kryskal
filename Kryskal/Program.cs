@@ -14,8 +14,8 @@ namespace Kruskal
             public int x, y;     // направление
             public int w;        // вес ребра                
         }
-        static int[] nodes = new int[100];    //
-        static int last_n = 0;                //   
+        static int[] nodes = new int[100];    //цвета вершин, если - то уникальны,  5 с 6, то у nodes5=6
+        static int last_n = 0;                //
         static bool consoleInput = false;
         static string path = "Data.txt";
         static string[] readLine = null;
@@ -27,7 +27,7 @@ namespace Kruskal
             int NE;      // Количество ребер в графе
             int i;
 
-            
+
             if (File.Exists(path))
             {
                 readLine = File.ReadAllLines(path);
@@ -46,31 +46,30 @@ namespace Kruskal
             Console.WriteLine("Введите матрицу: ");
             for (i = 0; i < NE; i++)
             {
-                string[] OutS = (consoleInput ? Console.ReadLine() : ReadFromFile(2+i)).Split(' ');    //массив вершин и веса ребра между ними
+                string[] OutS = (consoleInput ? Console.ReadLine() : ReadFromFile(2 + i)).Split(' ');    //массив вершин и веса ребра между ними
                 edges[i].x = Convert.ToInt32(OutS[0]);            //вершина "начало"
                 edges[i].y = Convert.ToInt32(OutS[1]);            //вершина "конец"
                 edges[i].w = Convert.ToInt32(OutS[2]);            //вес ребра между вершинами "начало" и "конец"
 
             }
 
-
+        
 
             Console.WriteLine("Минимальный остов: ");
 
             var sVes = from h in edges orderby h.w select h;    //сортируем ребра по весу (ро возрастанию)
             foreach (var s in sVes)           //для каждого ребра
             {
-                for (i = 0; i < NE; i++)
-                { // пока не прошли все ребра
-                    int c = getColor(s.y);     //присваиваем цвет ребра"конец" переменной с
-                    if (getColor(s.x) != c)
-                    {
-                        // Если ребро соединяет вершины различных цветов-мы его добавляем
-                        // и перекрашиваем вершины
-                        nodes[last_n] = s.y;
-                        Console.WriteLine(s.x + " =>> " + s.y + "   с весом:" + s.w);   //вывод строки 
-                    }
+
+                int c = getColor(s.y);     //сохраняем цвет с номером ребра "конец"
+                if (getColor(s.x) != c)
+                {
+                    // Если ребро соединяет вершины различных цветов-мы его добавляем
+                    // и перекрашиваем вершины
+                    nodes[last_n] = s.y;    //вершину n
+                    Console.WriteLine(s.x + " =>> " + s.y + "   с весом:" + s.w);   //вывод строки 
                 }
+
             }
 
             Console.ReadLine();
@@ -89,7 +88,7 @@ namespace Kruskal
             int c;
             if (nodes[n] < 0)       //если эта вершина не была посещена
             {
-                return nodes[last_n = n];     //
+                return nodes[last_n = n];     // окрашиваем вершину
             }
             c = getColor(nodes[n]);           //
             nodes[n] = last_n;                // nodes[n] присваиваем n- цвет????
