@@ -18,6 +18,7 @@ namespace Kruskal
         static int last_n = 0;                //   
         static bool consoleInput = false;
         static string path = "Data.txt";
+        static string[] readLine = null;
 
         static void Main(string[] args)
         {
@@ -26,7 +27,7 @@ namespace Kruskal
             int NE;      // Количество ребер в графе
             int i;
 
-            string[] readLine = null;
+            
             if (File.Exists(path))
             {
                 readLine = File.ReadAllLines(path);
@@ -36,8 +37,8 @@ namespace Kruskal
                 consoleInput = true;
 
             Console.WriteLine("Введите количество вершин и ребер: ");
-            NV = Convert.ToInt32(consoleInput ? Console.ReadLine() : ReadFromFile(readLine, 0));
-            NE = Convert.ToInt32(consoleInput ? Console.ReadLine() : ReadFromFile(readLine, 1));
+            NV = Convert.ToInt32(consoleInput ? Console.ReadLine() : ReadFromFile(0));
+            NE = Convert.ToInt32(consoleInput ? Console.ReadLine() : ReadFromFile(1));
             for (i = 0; i < NV; i++)
             {
                 nodes[i] = -1 - i;
@@ -45,7 +46,7 @@ namespace Kruskal
             Console.WriteLine("Введите матрицу: ");
             for (i = 0; i < NE; i++)
             {
-                string[] OutS = (consoleInput ? Console.ReadLine() : ReadFromFile(readLine, 2+i)).Split(' ');    //массив вершин и веса ребра между ними
+                string[] OutS = (consoleInput ? Console.ReadLine() : ReadFromFile(2+i)).Split(' ');    //массив вершин и веса ребра между ними
                 edges[i].x = Convert.ToInt32(OutS[0]);            //вершина "начало"
                 edges[i].y = Convert.ToInt32(OutS[1]);            //вершина "конец"
                 edges[i].w = Convert.ToInt32(OutS[2]);            //вес ребра между вершинами "начало" и "конец"
@@ -75,11 +76,12 @@ namespace Kruskal
             Console.ReadLine();
         }
 
-        private static string ReadFromFile(string[] readLine, int number)
+        private static string ReadFromFile(int number)
         {
             if (number > readLine.Length - 1)
                 return null;
-            return new Func<string>(() => { Console.WriteLine(readLine[number]); return readLine[number]; })();
+            Console.WriteLine(readLine[number]);
+            return readLine[number];
         }
 
         static public int getColor(int n)
